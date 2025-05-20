@@ -62,11 +62,48 @@ export const createSdkFactory = (
         connectionFactory
     )
 
+    const aptosSdkFactory = async (point: OmniPoint): Promise<IOApp> => {
+        if (endpointIdToChainType(point.eid) !== ChainType.APTOS) {
+            throw new Error(`Point is not Aptos: ${formatEid(point.eid)}`)
+        }
+
+        // Return a noop implementation so the hardhat runner does not error out
+        return {
+            point,
+            getOwner: async () => undefined,
+            hasOwner: async () => true,
+            setOwner: async () => {
+                throw new Error('Aptos SDK not implemented')
+            },
+            getEndpointSDK: async () => {
+                throw new Error('Aptos SDK not implemented')
+            },
+            getPeer: async () => undefined,
+            hasPeer: async () => true,
+            setPeer: async () => {
+                throw new Error('Aptos SDK not implemented')
+            },
+            getDelegate: async () => undefined,
+            isDelegate: async () => false,
+            setDelegate: async () => {
+                throw new Error('Aptos SDK not implemented')
+            },
+            getEnforcedOptions: async () => '0x',
+            setEnforcedOptions: async () => {
+                throw new Error('Aptos SDK not implemented')
+            },
+            getCallerBpsCap: async () => undefined,
+            setCallerBpsCap: async () => {
+                throw new Error('Aptos SDK not implemented')
+            },
+        } as unknown as IOApp
+    }
+
     // We now "merge" the two SDK factories into one.
     //
     // We do this by using the firstFactory helper function that is provided by the devtools package.
     // This function will try to execute the factories one by one and return the first one that succeeds.
-    return firstFactory<[OmniPoint], IOApp>(evmSdkfactory, solanaSdkFactory)
+    return firstFactory<[OmniPoint], IOApp>(evmSdkfactory, solanaSdkFactory, aptosSdkFactory)
 }
 
 export const createSolanaSignerFactory = (
