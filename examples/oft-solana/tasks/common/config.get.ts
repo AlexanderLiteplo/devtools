@@ -30,6 +30,7 @@ interface TaskArgs {
  * @param point {OmniPoint}
  */
 const isSolana = (point: OmniPoint) => endpointIdToChainType(point.eid) === ChainType.SOLANA
+const isEvm = (point: OmniPoint) => endpointIdToChainType(point.eid) === ChainType.EVM
 
 /**
  * Helper function to get the hardhat.config.ts network name for a given endpoint id, or use the convention of
@@ -63,9 +64,9 @@ const action: ActionType<TaskArgs> = async ({ logLevel = 'info', oappConfig }, h
     const evmSdkFactory = createOAppFactory(createConnectedContractFactory())
     const configs: Record<string, Record<string, unknown>> = {}
 
-    // Iterate over the graph of connections not from Solana
+    // Iterate over the graph of connections from EVM chains
     const tasks = graph.connections
-        .filter(({ vector: { from } }) => !isSolana(from))
+        .filter(({ vector: { from } }) => isEvm(from))
         .map(({ vector: { from, to } }) => async () => {
             const endpointV2Sdk = await (await evmSdkFactory(from)).getEndpointSDK()
 
