@@ -7,6 +7,7 @@ import 'dotenv/config'
 
 import '@openzeppelin/hardhat-upgrades'
 import 'hardhat-deploy'
+import './tasks/index'
 import '@nomiclabs/hardhat-waffle'
 import 'hardhat-deploy-ethers'
 import 'hardhat-contract-sizer'
