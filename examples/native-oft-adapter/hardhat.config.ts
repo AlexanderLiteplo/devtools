@@ -7,6 +7,7 @@ import 'dotenv/config'
 
 import 'hardhat-deploy'
 import 'hardhat-contract-sizer'
+import './tasks/index'
 import '@nomiclabs/hardhat-ethers'
 import '@layerzerolabs/toolbox-hardhat'
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
